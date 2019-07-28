@@ -1,9 +1,11 @@
 package models;
 
+import java.io.Serializable;
+
 /**
  * Created by Harsha Siriwardhana on 7/28/2019.
  */
-public class SendEmailMessage {
+public class SendEmailMessage implements Serializable {
 
     private String requestId;
     private String senderName;

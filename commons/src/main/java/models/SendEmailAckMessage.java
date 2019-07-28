@@ -1,9 +1,11 @@
 package models;
 
+import java.io.Serializable;
+
 /**
  * Created by Harsha Siriwardhana on 7/28/2019.
  */
-public class SendEmailAckMessage {
+public class SendEmailAckMessage implements Serializable {
 
     private String OK_STATUS = "OK";
     private String ERROR_STATUS = "ERROR";
@@ -56,5 +58,14 @@ public class SendEmailAckMessage {
         int result = getRequestId().hashCode();
         result = 31 * result + getStatus().hashCode();
         return result;
+    }
+
+    //override toString()
+    @Override
+    public String toString() {
+        return "SendEmailAckMessage{" +
+                "requestId='" + requestId + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

@@ -14,7 +14,7 @@ public class EmailServer {
     private ServerSocket serverSocket = null;
 
     private int threadCount = 20;
-    private int defaultPort = 9999;
+    private int defaultPort = 9998;
     private boolean serverInitiated = false;
 
     public ExecutorService getThreadPoolInstance() {
@@ -38,6 +38,7 @@ public class EmailServer {
             System.out.println(TAG + ":The Email Server is running...");
             while (serverInitiated) {
                 Socket socket = socketListner.accept();
+                socket.setReuseAddress(true);
                 EmailSendingJob job = new EmailSendingJob(socket);
                 getThreadPoolInstance().execute(job);
             }
