@@ -20,6 +20,9 @@
 
     <!--properties declare-->
     <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.plugin>3.6.1</maven.compiler.plugin>
         <junit.version>4.12</junit.version>
         <javax.mail.version>1.6.2</javax.mail.version>
     </properties>
@@ -39,9 +42,22 @@
             <artifactId>javax.mail-api</artifactId>
             <version>${javax.mail.version}</version>
         </dependency>
-
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 
 </project>
