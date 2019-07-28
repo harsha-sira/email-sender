@@ -1,11 +1,7 @@
-import models.SendEmailAckMessage;
-import models.SendEmailMessage;
-
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,6 +13,7 @@ public class EmailServer {
     private static final String TAG = "EmailServer";
     private ExecutorService threadPool = null;
     private ServerSocket serverSocket = null;
+    private SMTPServerConnection serverConnection = null;
 
     private int threadCount = 20;
     private int defaultPort = 9990;
@@ -32,9 +29,16 @@ public class EmailServer {
     }
 
     public EmailServer() {
+        //properties for mail server
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", false);
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "127.0.0.1");
+        properties.put("mail.smtp.port", "25");
+
         //create a thread pool if not exists
         getThreadPoolInstance();
-
+        serverConnection = new SMTPServerConnection(properties);
         serverInitiated = true;
     }
 
@@ -43,7 +47,7 @@ public class EmailServer {
             System.out.println(TAG + ":The Email Server is running...");
             while (serverInitiated) {
                 Socket socket = socketListner.accept();
-                EmailSendingJob job = new EmailSendingJob(socket);
+                EmailSendingJob job = new EmailSendingJob(socket,serverConnection);
                 getThreadPoolInstance().execute(job);
             }
 

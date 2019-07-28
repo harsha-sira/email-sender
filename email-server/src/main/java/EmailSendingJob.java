@@ -12,10 +12,12 @@ import java.net.Socket;
 public class EmailSendingJob implements Runnable {
 
     private Socket socket;
+    private SMTPServerConnection serverConnection;
     private static final String TAG = "EmailSendingJob";
 
-    public EmailSendingJob(Socket socket) {
+    public EmailSendingJob(Socket socket, SMTPServerConnection serverConnection) {
         this.socket = socket;
+        this.serverConnection = serverConnection;
     }
 
     @Override
@@ -25,8 +27,10 @@ public class EmailSendingJob implements Runnable {
              ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
         ) {
             SendEmailMessage email = (SendEmailMessage) inputStream.readObject();
-            System.out.println(TAG + ":sending email -> " + email.getRequestId());
-            SendEmailAckMessage ackMessage = new SendEmailAckMessage(email.getRequestId(), "OK");
+            System.out.println(TAG + ":sending email -> " + email.toString());
+
+
+            SendEmailAckMessage ackMessage = serverConnection.sendEmailAndGetAcknowledgement(email);
             outputStream.writeObject(ackMessage);
             System.out.println(TAG+ ":Ack message-> " + ackMessage.getRequestId());
 
