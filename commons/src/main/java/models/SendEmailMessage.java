@@ -12,7 +12,6 @@ public class SendEmailMessage implements Serializable {
     private String reciepientAddress;
     private String subject;
     private String message;
-
     //  constructors
     public SendEmailMessage(String requestId, String senderName, String reciepientAddress, String subject, String message) {
         this.requestId = requestId;
@@ -81,5 +80,16 @@ public class SendEmailMessage implements Serializable {
     @Override
     public int hashCode() {
         return getRequestId().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "SendEmailMessage{" +
+                "requestId='" + requestId + '\'' +
+                ", senderName='" + senderName + '\'' +
+                ", reciepientAddress='" + reciepientAddress + '\'' +
+                ", subject='" + subject + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

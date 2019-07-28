@@ -1,4 +1,9 @@
+import models.SendEmailAckMessage;
+import models.SendEmailMessage;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +19,7 @@ public class EmailServer {
     private ServerSocket serverSocket = null;
 
     private int threadCount = 20;
-    private int defaultPort = 9998;
+    private int defaultPort = 9990;
     private boolean serverInitiated = false;
 
     public ExecutorService getThreadPoolInstance() {
@@ -38,7 +43,6 @@ public class EmailServer {
             System.out.println(TAG + ":The Email Server is running...");
             while (serverInitiated) {
                 Socket socket = socketListner.accept();
-                socket.setReuseAddress(true);
                 EmailSendingJob job = new EmailSendingJob(socket);
                 getThreadPoolInstance().execute(job);
             }

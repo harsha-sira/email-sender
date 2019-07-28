@@ -1,3 +1,4 @@
+import models.SendEmailAckMessage;
 import models.SendEmailMessage;
 
 import java.io.*;
@@ -41,7 +42,7 @@ public class EmailClient {
                 .collect(Collectors.toList());
 
         //completableFuture with custom executor
-        List<CompletableFuture<String>> futureList = emailList.stream()
+        List<CompletableFuture<SendEmailAckMessage>> futureList = emailList.stream()
                 .map(t -> CompletableFuture.supplyAsync(() -> sendMessagesToServer(t), getThreadPoolInstance()))
                 .collect(Collectors.toList());
 
@@ -49,38 +50,31 @@ public class EmailClient {
                 .map(CompletableFuture::join)
                 .collect(Collectors.toList());
 
-
         //shutting down thread pool
         getThreadPoolInstance().shutdown();
     }
 
-    public String sendMessagesToServer(SendEmailMessage sendEmailMessage) {
+    public SendEmailAckMessage sendMessagesToServer(SendEmailMessage sendEmailMessage) {
 
+        try (Socket socket = new Socket("127.0.0.1", 9990);
+             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+        ) {
 
-        Socket socket = null;
-        try {
-            socket = new Socket("127.0.0.1", 9998);
-            System.out.println("Connected");
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            System.out.println(TAG + ": client sending [ mail id = " + sendEmailMessage.getRequestId() + "] Running on theread -> " + Thread.currentThread().getName());
             outputStream.writeObject(sendEmailMessage);
 
-//            System.out.println(TAG + ":ack = " + inputStream.readObject().toString() );
+            SendEmailAckMessage ack = (SendEmailAckMessage) inputStream.readObject();
+            System.out.println("ACK->" + ack.getRequestId());
+            return ack;
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(TAG+ "Error occured");
-        }
-        finally {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            System.out.println(TAG + "Error occured");
         }
 
 
-        return sendEmailMessage.getRequestId();
+        return null;
     }
 
     /*
@@ -91,8 +85,8 @@ public class EmailClient {
 
         //generate random UUID value as request id
         email.setRequestId(UUID.randomUUID().toString());
-        email.setSenderName("Email Client");
-        email.setReciepientAddress("outbox@test.com");
+        email.setSenderName("sender@gmail.com");
+        email.setReciepientAddress("outbox@gmail.com");
         email.setSubject("Email Sending");
         email.setMessage(" Sample email" + email.getRequestId());
 
