@@ -1,3 +1,4 @@
+import Logger.Logger;
 import models.SendEmailAckMessage;
 import models.SendEmailMessage;
 
@@ -54,7 +55,7 @@ public class EmailClient {
     public ExecutorService getThreadPoolInstance() {
         if (threadPool == null) {
             threadPool = Executors.newFixedThreadPool(threadCount);
-            System.out.println(TAG + ":Thread pool created of size=" + threadCount);
+            Logger.getLogger().info(":Thread pool created of size=" + threadCount);
             return threadPool;
         }
         return threadPool;
@@ -86,16 +87,15 @@ public class EmailClient {
              ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
         ) {
 
-            System.out.println(TAG + ": client sending [ mail id = " + sendEmailMessage.getRequestId() + "] Running on theread -> " + Thread.currentThread().getName());
+            Logger.getLogger().info(": client sending [ mail id = " + sendEmailMessage.getRequestId() + "] Running on theread -> " + Thread.currentThread().getName());
             outputStream.writeObject(sendEmailMessage);
 
             SendEmailAckMessage ack = (SendEmailAckMessage) inputStream.readObject();
-            System.out.println("ACK->" + ack.getRequestId());
+            Logger.getLogger().info(": client received acknowledgement - mail id = " + ack.getRequestId());
             return ack;
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(TAG + "Error occured");
+            Logger.getLogger().severe("Error occured:" + e);
         }
 
 

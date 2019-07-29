@@ -1,3 +1,4 @@
+import Logger.Logger;
 import models.SendEmailAckMessage;
 import models.SendEmailMessage;
 
@@ -27,21 +28,19 @@ public class EmailSendingJob implements Runnable {
              ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
         ) {
             SendEmailMessage email = (SendEmailMessage) inputStream.readObject();
-            System.out.println(TAG + ":sending email -> " + email.toString());
-
+            Logger.getLogger().info(":sending email id -> " + email.getRequestId());
 
             SendEmailAckMessage ackMessage = serverConnection.sendEmailAndGetAcknowledgement(email);
             outputStream.writeObject(ackMessage);
-            System.out.println(TAG+ ":Ack message-> " + ackMessage.getRequestId());
+            Logger.getLogger().info(":Ack message-> " + ackMessage.getRequestId());
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(TAG + "Error while processing email sending.");
+            Logger.getLogger().severe(TAG + "Error while processing email sending->" + e);
         } finally {
             try {
                 socket.close();
             } catch (IOException e) {
-                System.out.println(TAG + ":Exception while socket closing ->" + e);
+                Logger.getLogger().severe(TAG + ":Exception while socket closing ->" + e);
             }
         }
     }

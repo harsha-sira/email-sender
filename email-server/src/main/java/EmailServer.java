@@ -1,3 +1,5 @@
+import Logger.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -29,7 +31,7 @@ public class EmailServer {
     public ExecutorService getThreadPoolInstance() {
         if (threadPool == null) {
             threadPool = Executors.newFixedThreadPool(threadCount);
-            System.out.println(TAG + ":Thread pool created of size=" + threadCount);
+            Logger.getLogger().info("Thread pool created of size=" + threadCount);
             return threadPool;
         }
         return threadPool;
@@ -59,7 +61,7 @@ public class EmailServer {
 
     private void startServer() {
         try (ServerSocket socketListner = new ServerSocket(defaultPort)) {
-            System.out.println(TAG + ":The Email Server is running on port = " + defaultPort);
+            Logger.getLogger().info("The Email Server is running on port = " + defaultPort);
             while (serverInitiated) {
                 Socket socket = socketListner.accept();
                 EmailSendingJob job = new EmailSendingJob(socket,serverConnection);
@@ -68,14 +70,14 @@ public class EmailServer {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(TAG + ":Email server error while connecting to the socket");
+            Logger.getLogger().severe(TAG + ":Email server error while connecting to the socket");
         }
     }
 
     public static void main(String[] args) {
 
         EmailServer emailServer = new EmailServer();
-        System.out.println(TAG + ":Server starting ...");
+        Logger.getLogger().info("Server starting ...");
         emailServer.startServer();
     }
 }
