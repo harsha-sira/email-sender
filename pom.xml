@@ -26,6 +26,7 @@
         <junit.version>4.12</junit.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <commns.version>1.0-SNAPSHOT</commns.version>
+        <maven.jar.plugin>2.3.1</maven.jar.plugin>
     </properties>
 
     <!--dependency management-->
