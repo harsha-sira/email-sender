@@ -22,6 +22,11 @@ public class SendEmailAckMessage implements Serializable {
         this.status = status;
     }
 
+    public SendEmailAckMessage(String requestId) {
+        this.requestId = requestId;
+        this.status = ERROR_STATUS;
+    }
+
     //getters and setters
 
     public String getRequestId() {
