@@ -18,11 +18,36 @@ public class EmailClient {
 
     private static final String TAG = "EmailClient";
 
+    private static final String SOCKET_ADDRESS = "127.0.0.1";
+    private static final String SOCKET_ADDRESS_PROPERTY_NAME = "SOCKET_ADDRESS";
+    private static final String DEFAULT_PORT = "9990";
+    private static final String PORT_PROPRETY_NAME = "PORT";
+    private static final String DEFAULT_MAIL_SENDER = "sender@gmail.com";
+    private static final String MAIL_SENDER_PROPRETY_NAME = "MAIL_SENDER";
+    private static final String DEFAULT_MAIL_RECIEVER = "reciever@gmail.com";
+    private static final String MAIL_RECEIVER_PROPRETY_NAME = "MAIL_RECEIVER";
+    private static final String DEFAULT_THREAD_COUNT = "5";
+    private static final String THREAD_COUNT_PROPRETY_NAME = "THREAD_COUNT";
+    private static final String DEFAULT_TOTAL_EMAIL_COUNT = "20";
+    private static final String TOTAL_REQUESTS_COUNT_PROPRETY_NAME = "TOTAL_REQUESTS";
+
     private ExecutorService threadPool = null;
     private int threadCount = 5;
     private int emailCount = 20;
+    private String senderEmail;
+    private String recieverEmail;
+    private int port;
+    private String address;
 
     public EmailClient() {
+        //load jvm properties at runtime
+        threadCount = Integer.parseInt(System.getProperty(THREAD_COUNT_PROPRETY_NAME, DEFAULT_THREAD_COUNT));
+        emailCount = Integer.parseInt(System.getProperty(TOTAL_REQUESTS_COUNT_PROPRETY_NAME, DEFAULT_TOTAL_EMAIL_COUNT));
+        senderEmail = System.getProperty(MAIL_SENDER_PROPRETY_NAME, DEFAULT_MAIL_SENDER);
+        recieverEmail = System.getProperty(MAIL_RECEIVER_PROPRETY_NAME, DEFAULT_MAIL_RECIEVER);
+        port = Integer.parseInt(System.getProperty(PORT_PROPRETY_NAME, DEFAULT_PORT));
+        address = System.getProperty(SOCKET_ADDRESS_PROPERTY_NAME, SOCKET_ADDRESS);
+
         getThreadPoolInstance();
     }
 
@@ -56,7 +81,7 @@ public class EmailClient {
 
     public SendEmailAckMessage sendMessagesToServer(SendEmailMessage sendEmailMessage) {
 
-        try (Socket socket = new Socket("127.0.0.1", 9990);
+        try (Socket socket = new Socket(address, port);
              ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
              ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
         ) {
@@ -85,10 +110,10 @@ public class EmailClient {
 
         //generate random UUID value as request id
         email.setRequestId(UUID.randomUUID().toString());
-        email.setSenderName("sender@gmail.com");
-        email.setReciepientAddress("outbox@gmail.com");
-        email.setSubject("Email Sending");
-        email.setMessage(" Sample email" + email.getRequestId());
+        email.setSenderName(senderEmail);
+        email.setReciepientAddress(recieverEmail);
+        email.setSubject(email.getRequestId());
+        email.setMessage(" Req.Id =" + email.getRequestId());
 
         return email;
     }

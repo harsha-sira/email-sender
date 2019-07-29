@@ -30,7 +30,7 @@ public class SMTPServerConnection {
             message.setFrom(new InternetAddress(emailMessage.getSenderName()));
             message.setRecipients(
                     Message.RecipientType.TO, InternetAddress.parse(emailMessage.getReciepientAddress()));
-            message.setSubject(emailMessage.getSubject() + "-" + emailMessage.getRequestId());
+            message.setSubject(emailMessage.getSubject());
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(emailMessage.getMessage(), "text/html");
