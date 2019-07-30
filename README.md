@@ -8,18 +8,23 @@ You can download the generated jars in below location
 >https://drive.google.com/drive/folders/1fY8cPMMB9XSPjD3TmF2WcZ7Rt924-Hxv?usp=sharing
 
 * Run the FakeSMTP server
+
 `java  -jar  fakeSMTP-2.0.jar`
+
 use the default port to run SMTP server
 
 * Run the server
+
 `jar -jar email-server.jar`
 
 * Run the client
+
 `jar -jar -DTHREAD_COUNT=5 -DTOTAL_REQUESTS=30 email-client.jar`
 
 2. ### Build from source
 
 * Run the following commnd to generate jars
+
 `mvn -DskipTests=true package`
 
 *   Then follow the above instructions to run
@@ -50,9 +55,10 @@ use the default port to run SMTP server
 ### Troubleshooting
 
 
-Console log level is set as ALL. So everything will be print on console
+Console log level is set as ALL. So everything will be print on console.
+
 Also for SEVERE level logs will be wrote to a file as well.
 
-file will be created in below path
+File will be created in below path
 `\logs\email-logger.log`
 
