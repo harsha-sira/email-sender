@@ -64,7 +64,7 @@ public class EmailClient {
     private void startSendingEmail() {
         //generate emails as email count value
         List<SendEmailMessage> emailList = IntStream.range(0, emailCount)
-                .mapToObj(i -> generateRandomEmail(i))
+                .mapToObj(this::generateRandomEmail)
                 .collect(Collectors.toList());
 
         //completableFuture with custom executor

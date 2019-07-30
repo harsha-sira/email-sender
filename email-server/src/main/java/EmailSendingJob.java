@@ -30,6 +30,14 @@ public class EmailSendingJob implements Runnable {
             SendEmailMessage email = (SendEmailMessage) inputStream.readObject();
             Logger.getLogger().info(":sending email id -> " + email.getRequestId());
 
+            /*
+            -------------------------------------------------------
+            How to handle duplicate entries.
+            .................................
+            Before sending email to SMTP server we can have a validation here to check whether email id is previously send
+            we can use a concurrent collection like ConcurrentHashMap to store already send email ids and have a validation here
+            -----------------------------------------------------------
+             */
             SendEmailAckMessage ackMessage = serverConnection.sendEmailAndGetAcknowledgement(email);
             outputStream.writeObject(ackMessage);
             Logger.getLogger().info(":Ack message-> " + ackMessage.getRequestId());
