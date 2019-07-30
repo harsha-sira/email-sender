@@ -9,18 +9,18 @@ import java.util.logging.*;
  */
 public class Logger {
 
-    private static boolean initiated = false;
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
+    private static final java.util.logging.Logger LOGGER;
+
+    static {
+        LOGGER = java.util.logging.Logger.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
+        setup();
+    }
 
     public static java.util.logging.Logger getLogger() {
-        if (!initiated) {
-            setup();
-            initiated = true;
-        }
         return LOGGER;
     }
 
-    public static void setup() {
+    private static void setup() {
         LogManager.getLogManager().reset();
         LOGGER.setLevel(Level.ALL);
 

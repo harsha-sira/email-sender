@@ -1,3 +1,4 @@
+import Utils.Constants;
 import models.SendEmailAckMessage;
 import models.SendEmailMessage;
 import org.junit.Assert;
@@ -12,6 +13,7 @@ import static org.junit.Assert.*;
 public class EmailClientTest {
 
     SendEmailMessage emailMessage;
+
     @Before
     public void setUp() throws Exception {
         emailMessage = new SendEmailMessage();
@@ -28,7 +30,7 @@ public class EmailClientTest {
 
         SendEmailAckMessage ack = emailClient.sendMessagesToServer(emailMessage);
 //        if both servers  up
-        Assert.assertEquals("OK",ack.getStatus());
+        Assert.assertEquals(Constants.OK, ack.getStatus());
         Assert.assertNotNull(ack);
         Assert.assertEquals("1", ack.getRequestId());
     }

@@ -1,5 +1,7 @@
 package models;
 
+import Utils.Constants;
+
 import java.io.Serializable;
 
 /**
@@ -7,14 +9,12 @@ import java.io.Serializable;
  */
 public class SendEmailAckMessage implements Serializable {
 
-    private String OK_STATUS = "OK";
-    private String ERROR_STATUS = "ERROR";
     private String requestId;
     private String status;
 
     // constructors
     public SendEmailAckMessage() {
-        this.status = ERROR_STATUS;
+        this.status = Constants.ERROR;
     }
 
     public SendEmailAckMessage(String requestId, String status) {
@@ -24,7 +24,7 @@ public class SendEmailAckMessage implements Serializable {
 
     public SendEmailAckMessage(String requestId) {
         this.requestId = requestId;
-        this.status = ERROR_STATUS;
+        this.status = Constants.ERROR;
     }
 
     //getters and setters

@@ -1,3 +1,4 @@
+import Utils.Constants;
 import models.SendEmailAckMessage;
 import models.SendEmailMessage;
 
@@ -40,7 +41,7 @@ public class SMTPServerConnection {
 
             message.setContent(multipart);
             Transport.send(message);
-            ackMessage.setStatus("OK");
+            ackMessage.setStatus(Constants.OK);
 
         } catch (MessagingException e) {
             e.printStackTrace();

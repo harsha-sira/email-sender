@@ -1,3 +1,4 @@
+import Utils.Constants;
 import models.SendEmailAckMessage;
 import models.SendEmailMessage;
 import org.junit.Assert;
@@ -41,9 +42,10 @@ public class SMTPServerConnectionTest {
         SendEmailAckMessage ackMessage = connection.sendEmailAndGetAcknowledgement(emailMessage);
 
         Assert.assertNotNull(ackMessage);
-        Assert.assertEquals( "OK",ackMessage.getStatus());
-        Assert.assertEquals( "12",ackMessage.getRequestId());
+        Assert.assertEquals(Constants.OK, ackMessage.getStatus());
+        Assert.assertEquals("12", ackMessage.getRequestId());
     }
+
     /*
     When smtp server is down
      */
@@ -60,8 +62,8 @@ public class SMTPServerConnectionTest {
         SendEmailAckMessage ackMessage = connection.sendEmailAndGetAcknowledgement(emailMessage);
 
         Assert.assertNotNull(ackMessage);
-        Assert.assertEquals( "ERROR",ackMessage.getStatus());
-        Assert.assertEquals( "12",ackMessage.getRequestId());
+        Assert.assertEquals(Constants.ERROR, ackMessage.getStatus());
+        Assert.assertEquals("12", ackMessage.getRequestId());
     }
 
 }

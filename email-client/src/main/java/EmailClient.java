@@ -64,7 +64,7 @@ public class EmailClient {
     private void startSendingEmail() {
         //generate emails as email count value
         List<SendEmailMessage> emailList = IntStream.range(0, emailCount)
-                .mapToObj(i -> generateRandomEmail())
+                .mapToObj(i -> generateRandomEmail(i))
                 .collect(Collectors.toList());
 
         //completableFuture with custom executor
@@ -110,6 +110,22 @@ public class EmailClient {
 
         //generate random UUID value as request id
         email.setRequestId(UUID.randomUUID().toString());
+        email.setSenderName(senderEmail);
+        email.setReciepientAddress(recieverEmail);
+        email.setSubject(email.getRequestId());
+        email.setMessage(" Req.Id =" + email.getRequestId());
+
+        return email;
+    }
+
+    /*
+    Generate random SendEmailMessage object
+     */
+    private SendEmailMessage generateRandomEmail(int requestId) {
+        SendEmailMessage email = new SendEmailMessage();
+
+        //generate random UUID value as request id
+        email.setRequestId(Integer.toString(requestId));
         email.setSenderName(senderEmail);
         email.setReciepientAddress(recieverEmail);
         email.setSubject(email.getRequestId());
