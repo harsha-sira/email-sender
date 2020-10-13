@@ -23,7 +23,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.plugin>3.6.1</maven.compiler.plugin>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <commns.version>1.0-SNAPSHOT</commns.version>
         <maven.jar.plugin>2.3.1</maven.jar.plugin>
